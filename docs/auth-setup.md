@@ -53,16 +53,66 @@ Works as soon as the project exists. In **Authentication → Providers → Email
 
 ## 3. Google
 
-1. [Google Cloud console](https://console.cloud.google.com) → **APIs & Services
-   → Credentials → Create OAuth client ID → Web application**
-2. Authorised redirect URI:
-   `https://<your-project>.supabase.co/auth/v1/callback`
-3. Paste the client ID and secret into Supabase → **Authentication → Providers
-   → Google**
+The exact values for **this** project are below — copy them rather than
+retyping, because a single wrong character produces a `redirect_uri_mismatch`
+error that says nothing useful about which end is wrong.
 
-You will also need to complete Google's **OAuth consent screen**, and if you
-request anything beyond basic profile and email, Google verification can take
-weeks. Basic profile and email — which is all this app uses — does not need it.
+### 3a. Consent screen (first time only)
+
+[Google Cloud console](https://console.cloud.google.com) → create or pick a
+project → **APIs & Services → OAuth consent screen**:
+
+- User type: **External**
+- App name: `PitLane UK`, plus your support email
+- Scopes: leave at the defaults. `email`, `profile` and `openid` are all this
+  app uses, and they are *non-sensitive* — so **no Google verification review
+  is needed**. Adding anything beyond them triggers a review that can take
+  weeks.
+- **Publishing status:** while it says *Testing*, only accounts you add under
+  **Test users** can sign in — everyone else gets "app is blocked". Click
+  **Publish app** when you want it open to the public.
+
+### 3b. Create the OAuth client
+
+**APIs & Services → Credentials → Create credentials → OAuth client ID →
+Web application**
+
+Authorised JavaScript origins:
+
+```
+https://nvxfvmylogozfktaapoa.supabase.co
+```
+
+Authorised redirect URI — this points at Supabase, **not** at the app, which is
+the part people usually get wrong:
+
+```
+https://nvxfvmylogozfktaapoa.supabase.co/auth/v1/callback
+```
+
+### 3c. Enable it in Supabase
+
+**Authentication → Providers → Google** → toggle on, paste the **Client ID**
+and **Client secret**, save.
+
+### 3d. Check it worked
+
+```bash
+npm run check:auth
+```
+
+Google should read `[on ]`. The app discovers providers at runtime, so the
+button appears on next load — **no rebuild or redeploy needed**.
+
+### If sign-in fails
+
+- `redirect_uri_mismatch` — the URI in 3b does not exactly match. It must be
+  the Supabase callback, with no trailing slash.
+- "Access blocked: app is being tested" — still in Testing mode, see 3a.
+- Sign-in completes then dumps you on a strange page — the app's own redirect
+  is missing from Supabase → **Authentication → URL Configuration → Redirect
+  URLs**. Note this fails *silently*: Supabase falls back to the Site URL
+  rather than reporting an error.
 
 ---
 
