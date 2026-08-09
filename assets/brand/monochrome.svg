@@ -1,0 +1,16 @@
+<!--
+  Android themed-icon layer. Android tints this silhouette itself, so it must be
+  a flat white shape on transparency with no colour of its own. The lane edges
+  carry the shape; the centre dashes are punched out so the form still reads
+  once the launcher recolours it.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <g fill="#FFFFFF">
+    <path d="M 512 268 L 932 1024 L 830 1024 Z" />
+    <path d="M 512 268 L 194 1024 L 92 1024 Z" />
+    <path d="M 500 360 L 524 360 L 528 420 L 496 420 Z" />
+    <path d="M 494 470 L 530 470 L 536 560 L 488 560 Z" />
+    <path d="M 484 620 L 540 620 L 548 740 L 476 740 Z" />
+    <path d="M 472 810 L 552 810 L 562 1024 L 462 1024 Z" />
+  </g>
+</svg>

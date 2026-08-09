@@ -1,0 +1,34 @@
+<!--
+  The PitLane mark on its own, with no background: a pit lane in perspective,
+  narrowing to a vanishing point, centre line dashed in the brand orange.
+  Deliberately chunky — it has to hold up at 40px on a home screen.
+
+  The lane runs off the bottom of the 1024 canvas rather than stopping short,
+  so the full-bleed app icon does not read as a triangle floating in space.
+
+  Source of truth for every raster icon in ../. After editing, re-run:
+  node scripts/generate-icons.mjs
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="tarmac" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#2A3038" />
+      <stop offset="100%" stop-color="#151A20" />
+    </linearGradient>
+  </defs>
+
+  <!-- Lane surface, converging on the vanishing point at (512, 268). -->
+  <path d="M 512 268 L 932 1024 L 92 1024 Z" fill="url(#tarmac)" />
+
+  <!-- Lane edge markings, drawn as bands widening from the same apex. -->
+  <path d="M 512 268 L 932 1024 L 830 1024 Z" fill="#F2F4F7" opacity="0.92" />
+  <path d="M 512 268 L 194 1024 L 92 1024 Z" fill="#F2F4F7" opacity="0.92" />
+
+  <!-- Dashed centre line, each dash widening with perspective. -->
+  <g fill="#FF6B2C">
+    <path d="M 500 360 L 524 360 L 528 420 L 496 420 Z" />
+    <path d="M 494 470 L 530 470 L 536 560 L 488 560 Z" />
+    <path d="M 484 620 L 540 620 L 548 740 L 476 740 Z" />
+    <path d="M 472 810 L 552 810 L 562 1024 L 462 1024 Z" />
+  </g>
+</svg>
