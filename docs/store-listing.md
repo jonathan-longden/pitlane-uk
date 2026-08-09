@@ -154,6 +154,10 @@ Suggested order, same on both platforms:
 - [ ] Event listings verified with organisers, or a real backend connected
 - [ ] Android Google Maps API key added — the map is blank grey without one
       (see "Maps on each platform" in the README)
+- [ ] If a real ad network has been switched on, privacy policy and BOTH store
+      data declarations updated, plus ATT on iOS and a consent flow for UK/EEA
+      users — see [monetisation.md](monetisation.md). The current house ads
+      need none of this.
 - [ ] Apple: export compliance answered (`usesNonExemptEncryption` is already
       set to `false` in `app.json`)
 - [ ] Google: closed test completed if the account requires it

@@ -83,6 +83,10 @@ export interface CarEvent {
   recurrence?: string;
   /** Whether attendees must book ahead. */
   bookingRequired: boolean;
+  /** Listing photo. Absent listings fall back to a generated cover. */
+  imageUrl?: string;
+  /** Who took the photo, shown over the image where supplied. */
+  imageCredit?: string;
 }
 
 export interface Filters {

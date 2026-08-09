@@ -6,6 +6,7 @@ import { formatDateLabel, formatDistance, formatPrice, formatTime } from '../lib
 import { distanceKm, type Coords } from '../lib/geo';
 import type { CarEvent } from '../types';
 import { colors, radius, spacing, type } from '../theme';
+import { EventCover, useCoverUri } from './EventCover';
 import { SaveButton } from './SaveButton';
 
 interface EventCardProps {
@@ -16,6 +17,7 @@ interface EventCardProps {
 
 export function EventCard({ event, origin }: EventCardProps) {
   const distance = origin ? distanceKm(origin, event) : null;
+  const cover = useCoverUri(event);
 
   return (
     <Link href={{ pathname: '/event/[id]', params: { id: event.id } }} asChild>
@@ -24,6 +26,12 @@ export function EventCard({ event, origin }: EventCardProps) {
         accessibilityLabel={`${event.title}, ${event.town}, ${formatDateLabel(event.startsAt)}`}
         style={({ pressed }) => [styles.card, pressed && styles.pressed]}
       >
+        {/* Only listings with a real photo get cover art. A wall of generated
+            covers would make every card tall and say nothing, and it would
+            remove the reason to add a photo in the first place. */}
+        {cover && <EventCover event={event} height={150} roundedTopOnly />}
+
+        <View style={styles.body}>
         <View style={styles.headerRow}>
           <View style={styles.whenPill}>
             <Text style={styles.whenText}>{formatDateLabel(event.startsAt)}</Text>
@@ -65,6 +73,7 @@ export function EventCard({ event, origin }: EventCardProps) {
             </View>
           ))}
         </View>
+        </View>
       </Pressable>
     </Link>
   );
@@ -76,6 +85,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.border,
+    // The cover art is full-bleed, so padding lives on the body below it.
+    overflow: 'hidden',
+  },
+  body: {
     padding: spacing.lg,
     gap: spacing.sm,
   },

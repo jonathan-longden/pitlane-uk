@@ -12,8 +12,10 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AdSlot } from '../../src/components/AdSlot';
 import { EmptyState } from '../../src/components/EmptyState';
 import { EventCard } from '../../src/components/EventCard';
+import { ADS_EVERY_N_ITEMS } from '../../src/lib/ads';
 import { activeFilterCount, applyFilters, groupByWhen } from '../../src/lib/filter';
 import { distanceKm } from '../../src/lib/geo';
 import { useEvents } from '../../src/state/useEvents';
@@ -142,7 +144,18 @@ export default function DiscoverScreen() {
         <SectionList
           sections={sections}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <EventCard event={item} origin={coords} />}
+          renderItem={({ item, index }) => (
+            <>
+              <EventCard event={item} origin={coords} />
+              {/* An ad every few listings, rather than a fixed banner that
+                  covers content or gets ignored after the first scroll. */}
+              {index > 0 && (index + 1) % ADS_EVERY_N_ITEMS === 0 && (
+                <View style={styles.adSpacing}>
+                  <AdSlot placement="discover-feed" seed={index} />
+                </View>
+              )}
+            </>
+          )}
           renderSectionHeader={({ section }) => (
             <Text style={styles.sectionHeader}>{section.title}</Text>
           )}
@@ -299,6 +312,9 @@ const styles = StyleSheet.create({
   },
   listContentEmpty: {
     flexGrow: 1,
+  },
+  adSpacing: {
+    marginTop: spacing.md,
   },
   sectionHeader: {
     ...type.label,

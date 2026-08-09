@@ -21,6 +21,13 @@ Store**, **Google Play** and the **web**.
   is installed and the website when it is not — no scheme declarations needed
   on either platform.
 - **Saved** — a shortlist kept on the device, no account needed.
+- **Photos** — attach a picture to any listing. Listings with a photo get
+  full-width cover art while the rest stay compact, so a photo is what makes a
+  listing stand out. Device-only for now — see
+  [monetisation.md](docs/monetisation.md#photos-on-listings).
+- **Ad slots** — one every six listings and one on the detail screen, labelled
+  and currently filled with house ads that track nobody. See
+  [monetisation.md](docs/monetisation.md).
 - **Near me** — optional location access sorts by distance. The app is fully
   usable without granting it, and never asks on first launch.
 

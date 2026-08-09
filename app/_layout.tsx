@@ -4,6 +4,7 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { FiltersProvider } from '../src/state/FiltersContext';
+import { PhotosProvider } from '../src/state/PhotosContext';
 import { SavedProvider } from '../src/state/SavedContext';
 import { colors } from '../src/theme';
 
@@ -25,6 +26,7 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <ThemeProvider value={navTheme}>
           <SavedProvider>
+            <PhotosProvider>
             <FiltersProvider>
               <StatusBar style="light" />
               <Stack
@@ -46,6 +48,7 @@ export default function RootLayout() {
                 />
               </Stack>
             </FiltersProvider>
+            </PhotosProvider>
           </SavedProvider>
         </ThemeProvider>
       </SafeAreaProvider>

@@ -33,7 +33,10 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "predictiveBackGestureEnabled": false
     },
     "web": {
@@ -48,6 +51,14 @@
         "expo-location",
         {
           "locationWhenInUsePermission": "PitLane uses your location to show car meets and events happening near you."
+        }
+      ],
+      "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "PitLane needs access to your photos so you can add a picture to a meet listing.",
+          "cameraPermission": "PitLane needs camera access so you can photograph a meet."
         }
       ]
     ],

@@ -12,9 +12,12 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AdSlot } from '../../src/components/AdSlot';
 import { Chip } from '../../src/components/Chip';
 import { DirectionsSheet } from '../../src/components/DirectionsSheet';
 import { EmptyState } from '../../src/components/EmptyState';
+import { EventCover } from '../../src/components/EventCover';
+import { PhotoPicker } from '../../src/components/PhotoPicker';
 import { SaveButton } from '../../src/components/SaveButton';
 import { eventRepository } from '../../src/data/repository';
 import {
@@ -95,6 +98,8 @@ export default function EventDetailScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
+        <EventCover event={event} height={190} style={styles.hero} />
+
         <View style={styles.whenBanner}>
           <Ionicons name="calendar-outline" size={16} color={colors.accent} />
           <Text style={styles.whenText}>{formatFullDate(event.startsAt)}</Text>
@@ -166,6 +171,9 @@ export default function EventDetailScreen() {
         <Text style={styles.sectionLabel}>About this meet</Text>
         <Text style={styles.description}>{event.description}</Text>
 
+        <Text style={styles.sectionLabel}>Photos</Text>
+        <PhotoPicker eventId={event.id} />
+
         <Text style={styles.sectionLabel}>On site</Text>
         <View style={styles.tagRow}>
           {event.facilities.map((facility) => (
@@ -186,6 +194,10 @@ export default function EventDetailScreen() {
               <Text style={styles.linkText}>Visit organiser website</Text>
             </Pressable>
           )}
+        </View>
+
+        <View style={styles.adWrap}>
+          <AdSlot placement="event-detail" />
         </View>
 
         <Text style={styles.disclaimer}>
@@ -241,6 +253,12 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.xxl * 3,
+  },
+  hero: {
+    marginBottom: spacing.lg,
+  },
+  adWrap: {
+    marginTop: spacing.xl,
   },
   whenBanner: {
     flexDirection: 'row',

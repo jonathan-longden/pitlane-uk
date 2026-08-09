@@ -29,6 +29,16 @@ advertising identifier, or any other identifier.
 | --- | --- | --- |
 | Your saved meets | So your shortlist is still there next time you open the app | Stored locally only. Never transmitted. |
 | Your filter selections | To keep the map and list in step during a session | Held in memory, cleared when you close the app. |
+| Photos you attach to a listing | So you can add a picture to a meet | Stored locally only. Not uploaded, not shared with other users. |
+
+## Advertising
+
+The app shows a small number of ad slots. These currently carry PitLane's own
+promotions only — there is no ad network, no third-party advertising SDK, and
+no advertising identifier is read or shared.
+
+> If an ad network is ever added, this section and the store disclosures below
+> must be rewritten before that build ships. See `docs/monetisation.md`.
 
 Deleting the app removes all of it.
 
