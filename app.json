@@ -39,7 +39,8 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
-      "output": "static"
+      "_comment": "single, not static: the web map uses Leaflet, which needs a real DOM and cannot be server-rendered. Deep links need a host that rewrites unknown paths to index.html.",
+      "output": "single"
     },
     "plugins": [
       "expo-router",

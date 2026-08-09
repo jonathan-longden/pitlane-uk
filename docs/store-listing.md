@@ -152,6 +152,8 @@ Suggested order, same on both platforms:
 - [ ] Support URL live
 - [ ] Screenshots captured at every required size
 - [ ] Event listings verified with organisers, or a real backend connected
+- [ ] Android Google Maps API key added — the map is blank grey without one
+      (see "Maps on each platform" in the README)
 - [ ] Apple: export compliance answered (`usesNonExemptEncryption` is already
       set to `false` in `app.json`)
 - [ ] Google: closed test completed if the account requires it

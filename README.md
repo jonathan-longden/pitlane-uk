@@ -12,7 +12,8 @@ Store**, **Google Play** and the **web**.
 - **Discover** — every upcoming meet, grouped by how soon it is, with full-text
   search across titles, venues, towns, postcodes and organisers.
 - **Map** — all meets plotted across the UK, with a carousel that stays in sync
-  with the selected pin.
+  with the selected pin. Native uses the platform map; web uses Leaflet with
+  dark raster tiles. See [Maps on each platform](#maps-on-each-platform).
 - **Filters** — region, type of meet, time window and free-entry-only.
 - **Event detail** — times, entry price, whether booking is required, what is on
   site, the organiser, and turn-by-turn directions in **Waze**, Google Maps or
@@ -90,6 +91,40 @@ Seed events carry an offset in days from today rather than fixed dates, snapped
 forward to the weekday each meet actually runs on. That keeps the catalogue
 populated with plausible upcoming meets while there is no backend. Real data
 will carry absolute timestamps.
+
+### Maps on each platform
+
+| Platform | Renderer | Needs a key? |
+| --- | --- | --- |
+| iOS | Apple Maps via `react-native-maps` | No |
+| Android | Google Maps via `react-native-maps` | **Yes** |
+| Web | Leaflet + CARTO dark raster tiles | No |
+
+**Android will show a blank grey map until you add a Google Maps API key.**
+This is not a bug in the app — `PROVIDER_DEFAULT` on Android is Google Maps,
+and it renders nothing without a key. To fix it:
+
+1. In the Google Cloud console, enable **Maps SDK for Android** and create an
+   API key, restricted to your `uk.co.pitlane.app` package and signing
+   certificate.
+2. Add it to `app.json`:
+
+```json
+"android": {
+  "config": { "googleMaps": { "apiKey": "YOUR_ANDROID_MAPS_API_KEY" } }
+}
+```
+
+A key committed to a repo is a key someone else can bill you for. If this repo
+ever goes public, move the config to an `app.config.js` that reads the key from
+the environment, and set it as an EAS secret.
+
+iOS needs nothing — Apple Maps works out of the box.
+
+The web build uses CARTO's free basemap tiles. Attribution is rendered on the
+map, which their terms require. Free-tier usage is fine for testing and modest
+traffic; a popular public site should move to a paid tile plan or self-hosted
+tiles.
 
 ### Regenerating the icons
 
