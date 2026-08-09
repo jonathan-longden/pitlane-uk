@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { EventMap } from '../../src/components/EventMap';
+import { KindToggle, type KindFilter } from '../../src/components/KindToggle';
 import { activeFilterCount, applyFilters } from '../../src/lib/filter';
 import { formatDateLabel, formatPrice, formatTime } from '../../src/lib/format';
 import { useEvents } from '../../src/state/useEvents';
@@ -29,10 +30,16 @@ export default function MapScreen() {
   const { filters } = useFilters();
   const { coords, status, request } = useUserLocation();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [kind, setKind] = useState<KindFilter>('all');
   const listRef = useRef<FlatList<CarEvent>>(null);
 
-  const visible = useMemo(() => applyFilters(events, filters), [events, filters]);
+  const visible = useMemo(() => {
+    const byKind = kind === 'all' ? events : events.filter((e) => e.kind === kind);
+    return applyFilters(byKind, filters);
+  }, [events, filters, kind]);
   const filterCount = activeFilterCount(filters);
+  // "40 places" reads better than "40 meets" when both kinds are shown.
+  const countNoun = kind === 'all' ? 'place' : kind;
 
   // Keep the selection valid when the filters change underneath it.
   useEffect(() => {
@@ -68,13 +75,14 @@ export default function MapScreen() {
       />
 
       <View style={[styles.topBar, { top: insets.top + spacing.sm }]}>
-        <View style={styles.countPill}>
-          <Ionicons name="car-sport" size={14} color={colors.accent} />
-          <Text style={styles.countText}>
-            {visible.length} {visible.length === 1 ? 'meet' : 'meets'}
-          </Text>
-        </View>
-        <View style={{ flex: 1 }} />
+        <View style={styles.topRow}>
+          <View style={styles.countPill}>
+            <Ionicons name="car-sport" size={14} color={colors.accent} />
+            <Text style={styles.countText}>
+              {visible.length} {visible.length === 1 ? countNoun : `${countNoun}s`}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }} />
         {status !== 'granted' && (
           <Pressable
             onPress={request}
@@ -101,6 +109,9 @@ export default function MapScreen() {
             color={filterCount > 0 ? colors.white : colors.text}
           />
         </Pressable>
+        </View>
+
+        <KindToggle value={kind} onChange={setKind} />
       </View>
 
       {visible.length > 0 && (
@@ -177,6 +188,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: spacing.lg,
     right: spacing.lg,
+    gap: spacing.sm,
+  },
+  topRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
