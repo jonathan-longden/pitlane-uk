@@ -15,7 +15,10 @@ Store**, **Google Play** and the **web**.
   with the selected pin.
 - **Filters** — region, type of meet, time window and free-entry-only.
 - **Event detail** — times, entry price, whether booking is required, what is on
-  site, the organiser, and one tap through to native turn-by-turn directions.
+  site, the organiser, and turn-by-turn directions in **Waze**, Google Maps or
+  Apple Maps. Each option uses a public https link, so it opens the app when it
+  is installed and the website when it is not — no scheme declarations needed
+  on either platform.
 - **Saved** — a shortlist kept on the device, no account needed.
 - **Near me** — optional location access sorts by distance. The app is fully
   usable without granting it, and never asks on first launch.

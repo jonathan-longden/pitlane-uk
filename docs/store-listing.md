@@ -51,7 +51,7 @@ SAVE FOR LATER
 Bookmark anything that catches your eye. No account, no sign-up, no email address. Your shortlist stays on your phone.
 
 TURN UP PREPARED
-Every listing shows start and finish times, entry price, whether you need to book, what's on site, and who's running it. One tap opens directions in your usual maps app.
+Every listing shows start and finish times, entry price, whether you need to book, what's on site, and who's running it. One tap sends you there in Waze, Google Maps or Apple Maps — your choice.
 
 KEEPING MEETS ALIVE
 Car meets survive on goodwill. Keep the noise down, never take part in anti-social driving, and follow whatever the organisers ask on the day. A single bad night is how car parks get closed to everyone.
@@ -102,7 +102,7 @@ PitLane finds what's on near you — from a Tuesday night car park meet to a ful
 • MAP — every meet plotted across the UK
 • NEAR ME — optional location access sorts by distance
 • SAVE — bookmark meets with no account and no sign-up
-• DIRECTIONS — one tap into your usual maps app
+• DIRECTIONS — navigate with Waze, Google Maps or Apple Maps
 
 WHAT EACH LISTING TELLS YOU
 Start and finish times, entry price, whether you need to book ahead, what's on site, and who's organising it.

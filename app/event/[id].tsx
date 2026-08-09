@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Linking,
-  Platform,
   Pressable,
   ScrollView,
   Share,
@@ -14,6 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Chip } from '../../src/components/Chip';
+import { DirectionsSheet } from '../../src/components/DirectionsSheet';
 import { EmptyState } from '../../src/components/EmptyState';
 import { SaveButton } from '../../src/components/SaveButton';
 import { eventRepository } from '../../src/data/repository';
@@ -28,19 +28,6 @@ import { useUserLocation } from '../../src/state/useUserLocation';
 import type { CarEvent } from '../../src/types';
 import { colors, radius, spacing, type } from '../../src/theme';
 
-/** Opens the platform's own maps app at the venue. */
-function openDirections(event: CarEvent) {
-  const label = encodeURIComponent(`${event.venue}, ${event.postcode}`);
-  const coords = `${event.latitude},${event.longitude}`;
-  const url =
-    Platform.OS === 'ios'
-      ? `http://maps.apple.com/?daddr=${coords}&q=${label}`
-      : Platform.OS === 'android'
-        ? `geo:${coords}?q=${coords}(${label})`
-        : `https://www.google.com/maps/search/?api=1&query=${coords}`;
-  Linking.openURL(url).catch(() => {});
-}
-
 export default function EventDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
@@ -48,6 +35,7 @@ export default function EventDetailScreen() {
   const { coords } = useUserLocation();
   const [event, setEvent] = useState<CarEvent | null>(null);
   const [loading, setLoading] = useState(true);
+  const [directionsOpen, setDirectionsOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -158,7 +146,7 @@ export default function EventDetailScreen() {
 
         <Text style={styles.sectionLabel}>Where</Text>
         <Pressable
-          onPress={() => openDirections(event)}
+          onPress={() => setDirectionsOpen(true)}
           accessibilityRole="button"
           accessibilityLabel={`Get directions to ${event.venue}`}
           style={({ pressed }) => [styles.venueCard, pressed && { opacity: 0.8 }]}
@@ -221,7 +209,7 @@ export default function EventDetailScreen() {
         </Pressable>
 
         <Pressable
-          onPress={() => openDirections(event)}
+          onPress={() => setDirectionsOpen(true)}
           accessibilityRole="button"
           style={({ pressed }) => [styles.primaryButton, pressed && { opacity: 0.85 }]}
         >
@@ -229,6 +217,12 @@ export default function EventDetailScreen() {
           <Text style={styles.primaryText}>Directions</Text>
         </Pressable>
       </View>
+
+      <DirectionsSheet
+        event={event}
+        visible={directionsOpen}
+        onClose={() => setDirectionsOpen(false)}
+      />
     </View>
   );
 }
