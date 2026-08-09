@@ -66,8 +66,17 @@ function friendly(message: string): string {
   if (m.includes('email not confirmed')) {
     return 'Check your inbox and confirm your email address first.';
   }
-  if (m.includes('rate limit') || m.includes('too many')) {
-    return 'Too many attempts. Wait a minute and try again.';
+  // Supabase phrases its send throttle as "For security purposes, you can only
+  // request this after N seconds", which contains none of the obvious words.
+  if (
+    m.includes('rate limit') ||
+    m.includes('too many') ||
+    m.includes('for security purposes')
+  ) {
+    return 'Too many attempts just now. Give it a minute and try again.';
+  }
+  if (m.includes('user already registered')) {
+    return 'There is already an account with that email. Try signing in instead.';
   }
   return message;
 }
