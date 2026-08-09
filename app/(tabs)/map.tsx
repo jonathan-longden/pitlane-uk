@@ -112,6 +112,9 @@ export default function MapScreen() {
           showsHorizontalScrollIndicator={false}
           snapToInterval={CARD_WIDTH + spacing.md}
           decelerationRate="fast"
+          // Without this the list stretches to fill the screen and the cards
+          // grow with it, hiding the map behind them.
+          style={styles.carouselList}
           contentContainerStyle={[
             styles.carousel,
             { paddingBottom: insets.bottom + spacing.md },
@@ -208,9 +211,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
     borderColor: colors.accent,
   },
+  carouselList: {
+    flexGrow: 0,
+    flexShrink: 0,
+  },
   carousel: {
     paddingHorizontal: spacing.lg,
     gap: spacing.md,
+    // Keeps each card at its natural height rather than filling the row.
+    alignItems: 'flex-end',
   },
   card: {
     width: CARD_WIDTH,

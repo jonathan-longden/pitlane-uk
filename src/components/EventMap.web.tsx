@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, radius, spacing, type } from '../theme';
 import type { EventMapProps } from './EventMap.types';
 
@@ -44,18 +44,12 @@ export function EventMap({ events, selectedId, onSelect }: EventMapProps) {
         })}
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.noticeRow}
-      >
-        <View style={styles.notice}>
-          <Ionicons name="information-circle-outline" size={14} color={colors.textFaint} />
-          <Text style={styles.noticeText}>
-            Interactive maps are available in the iOS and Android apps.
-          </Text>
-        </View>
-      </ScrollView>
+      <View style={styles.noticeRow}>
+        <Ionicons name="information-circle-outline" size={14} color={colors.textFaint} />
+        <Text style={styles.noticeText}>
+          Interactive maps are available in the iOS and Android apps.
+        </Text>
+      </View>
     </View>
   );
 }
@@ -72,6 +66,7 @@ const styles = StyleSheet.create({
   plot: {
     flex: 1,
     margin: spacing.lg,
+    marginBottom: 0,
     borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.border,
@@ -84,13 +79,14 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -11 }, { translateY: -22 }],
   },
   noticeRow: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.lg,
-  },
-  notice: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    // Clears the card carousel, which floats over this component. Without it
+    // both this notice and the southernmost pins end up hidden behind the cards.
+    marginBottom: 168,
   },
   noticeText: {
     ...type.caption,

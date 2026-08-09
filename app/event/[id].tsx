@@ -98,7 +98,13 @@ export default function EventDetailScreen() {
       />
 
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingTop: insets.top + 56 }]}
+        // The header is transparent and content scrolls under it, so the first
+        // line needs to clear it. The floor covers web, where there is no
+        // top safe-area inset to push it down.
+        contentContainerStyle={[
+          styles.content,
+          { paddingTop: Math.max(insets.top, 24) + 56 },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.whenBanner}>
