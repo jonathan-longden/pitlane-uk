@@ -11,6 +11,14 @@ policy must be updated before the change ships.
 > publishing. Both Apple and Google require this policy to be reachable at a
 > public URL, and that URL must be entered in your store listings.
 
+> **This policy describes the app WITHOUT accounts connected, which is how it
+> currently ships.** The sign-in screens exist but no Supabase project is
+> attached, so no account data is collected. **Before releasing a build with
+> accounts enabled, the sections below must be rewritten** — see
+> `docs/auth-setup.md` section 8. Shipping accounts under a policy that says
+> "no data collected" is the mismatch that gets apps removed rather than
+> rejected.
+
 ## The short version
 
 PitLane UK does not have user accounts, does not collect personal information,

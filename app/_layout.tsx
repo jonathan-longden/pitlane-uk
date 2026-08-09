@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthProvider } from '../src/state/AuthContext';
 import { FiltersProvider } from '../src/state/FiltersContext';
 import { PhotosProvider } from '../src/state/PhotosContext';
 import { SavedProvider } from '../src/state/SavedContext';
@@ -25,6 +26,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.bg }}>
       <SafeAreaProvider>
         <ThemeProvider value={navTheme}>
+          <AuthProvider>
           <SavedProvider>
             <PhotosProvider>
             <FiltersProvider>
@@ -46,10 +48,15 @@ export default function RootLayout() {
                   name="filters"
                   options={{ presentation: 'modal', title: 'Filters' }}
                 />
+                <Stack.Screen
+                  name="sign-in"
+                  options={{ presentation: 'modal', title: 'Account' }}
+                />
               </Stack>
             </FiltersProvider>
             </PhotosProvider>
           </SavedProvider>
+          </AuthProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

@@ -31,6 +31,11 @@ Store**, **Google Play** and the **web**.
   is installed and the website when it is not — no scheme declarations needed
   on either platform.
 - **Saved** — a shortlist kept on the device, no account needed.
+- **Accounts** — sign up with email, Google, Microsoft (Hotmail/Outlook/Live) or
+  Apple, with password reset and in-app account deletion. Optional: the app is
+  fully usable signed out. **Requires a Supabase project — see
+  [auth-setup.md](docs/auth-setup.md).** Until one is connected the sign-in
+  screen says so plainly instead of failing at a button.
 - **Photos** — attach a picture to any listing. Listings with a photo get
   full-width cover art while the rest stay compact, so a photo is what makes a
   listing stand out. Device-only for now — see

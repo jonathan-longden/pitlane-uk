@@ -1,8 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Alert,
+  Linking,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAuth } from '../../src/state/AuthContext';
 import { useSaved } from '../../src/state/SavedContext';
 import { useUserLocation } from '../../src/state/useUserLocation';
 import { colors, radius, spacing, type } from '../../src/theme';
@@ -33,8 +44,10 @@ function Row({ icon, label, detail, onPress }: RowProps) {
 
 export default function AboutScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const { savedIds } = useSaved();
   const { status, request } = useUserLocation();
+  const { user, configured, signOut, deleteAccount } = useAuth();
 
   const locationDetail =
     status === 'granted'
@@ -53,6 +66,52 @@ export default function AboutScreen() {
       showsVerticalScrollIndicator={false}
     >
       <Text style={styles.title}>More</Text>
+
+      <Text style={styles.sectionLabel}>Account</Text>
+      <View style={styles.card}>
+        {user ? (
+          <>
+            <Row
+              icon="person-circle-outline"
+              label={user.displayName ?? 'Signed in'}
+              detail={user.email ?? undefined}
+            />
+            <View style={styles.divider} />
+            <Row icon="log-out-outline" label="Sign out" onPress={() => void signOut()} />
+            <View style={styles.divider} />
+            <Row
+              icon="trash-outline"
+              label="Delete my account"
+              onPress={() =>
+                Alert.alert(
+                  'Delete your account?',
+                  'This permanently removes your account and anything attached to it. It cannot be undone.',
+                  [
+                    { text: 'Cancel', style: 'cancel' },
+                    {
+                      text: 'Delete',
+                      style: 'destructive',
+                      onPress: async () => {
+                        const result = await deleteAccount();
+                        if (!result.ok) {
+                          Alert.alert('Could not delete account', result.message ?? '');
+                        }
+                      },
+                    },
+                  ],
+                )
+              }
+            />
+          </>
+        ) : (
+          <Row
+            icon="log-in-outline"
+            label="Sign in or create an account"
+            detail={configured ? 'Sync your saved meets' : 'Not connected yet'}
+            onPress={() => router.push('/sign-in')}
+          />
+        )}
+      </View>
 
       <Text style={styles.sectionLabel}>Your app</Text>
       <View style={styles.card}>
