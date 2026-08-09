@@ -118,26 +118,59 @@ will carry absolute timestamps.
 | Android | Google Maps via `react-native-maps` | **Yes** |
 | Web | Leaflet + CARTO dark raster tiles | No |
 
-**Android will show a blank grey map until you add a Google Maps API key.**
-This is not a bug in the app — `PROVIDER_DEFAULT` on Android is Google Maps,
-and it renders nothing without a key. To fix it:
+**Android shows a blank grey map until a Google Maps API key is supplied.**
+That is not a bug in the app — `PROVIDER_DEFAULT` on Android is Google Maps and
+it renders nothing without a key. iOS needs nothing; Apple Maps works out of
+the box.
 
-1. In the Google Cloud console, enable **Maps SDK for Android** and create an
-   API key, restricted to your `uk.co.pitlane.app` package and signing
-   certificate.
-2. Add it to `app.json`:
+The wiring is already in place. [`app.config.js`](app.config.js) injects the key
+from the `GOOGLE_MAPS_ANDROID_API_KEY` environment variable, so it never has to
+be committed. You only need to supply the value.
 
-```json
-"android": {
-  "config": { "googleMaps": { "apiKey": "YOUR_ANDROID_MAPS_API_KEY" } }
-}
+**1. Get a key** — in the [Google Cloud console](https://console.cloud.google.com):
+
+- Create or pick a project and enable billing. Maps SDK for Android has a free
+  monthly allowance, but the API will not serve at all without billing enabled.
+- **APIs & Services → Library** → enable **Maps SDK for Android**
+- **Credentials → Create credentials → API key**
+- Restrict it: **Android apps**, package `uk.co.pitlane.app`, plus your signing
+  SHA-1 (get that with `eas credentials`)
+- **API restrictions** → restrict to Maps SDK for Android
+
+**2. Local development** — copy `.env.example` to `.env` and fill it in:
+
+```bash
+cp .env.example .env
 ```
 
-A key committed to a repo is a key someone else can bill you for. If this repo
-ever goes public, move the config to an `app.config.js` that reads the key from
-the environment, and set it as an EAS secret.
+`.env` is git-ignored. Expo loads it automatically.
 
-iOS needs nothing — Apple Maps works out of the box.
+**3. Cloud builds** — store it as an EAS secret rather than committing it:
+
+```bash
+eas secret:create --scope project --name GOOGLE_MAPS_ANDROID_API_KEY --value YOUR_KEY
+```
+
+**4. Check it took effect** — this should print your key, and `null` without it:
+
+```bash
+npx expo config --type prebuild --json
+```
+
+Look for `android.config.googleMaps.apiKey`. Note that `--type public` will
+*not* show it; that view strips native-only fields.
+
+### Is the key a secret?
+
+Not really, and it is worth being clear about why the plumbing above still
+matters. The key ships inside the Android binary and can be extracted from any
+installed APK. What protects it is the **restriction** to your package name and
+signing certificate — an unrestricted key is abusable by anyone who pulls it out
+of the APK, and a restricted one is not much use to them.
+
+Keeping it out of git protects against something different: bots continuously
+scrape public repositories for API keys and run up bills on unrestricted ones.
+Do both — restrict the key *and* keep it out of the repo.
 
 The web build uses CARTO's free basemap tiles. Attribution is rendered on the
 map, which their terms require. Free-tier usage is fine for testing and modest
