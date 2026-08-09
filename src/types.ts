@@ -54,8 +54,17 @@ export const CATEGORIES: EventCategory[] = [
   'Auction',
 ];
 
+/**
+ * Meets are informal gatherings you turn up to — a car park on a Tuesday
+ * night, coffee on a Sunday morning. Events are organised occasions with a
+ * ticket, a gate and usually a booking: track days, shows, auctions. They are
+ * different intents, so they get their own tabs.
+ */
+export type EventKind = 'meet' | 'event';
+
 export interface CarEvent {
   id: string;
+  kind: EventKind;
   title: string;
   /** One-paragraph description shown on the detail screen. */
   description: string;

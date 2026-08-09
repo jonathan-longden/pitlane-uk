@@ -9,8 +9,18 @@ Store**, **Google Play** and the **web**.
 
 ## What it does
 
-- **Discover** — every upcoming meet, grouped by how soon it is, with full-text
-  search across titles, venues, towns, postcodes and organisers.
+- **Meets** — informal turn-up gatherings: car parks, cafes, cars and coffee.
+- **Events** — organised occasions with a ticket and usually a booking: track
+  days, shows, auctions.
+
+  Both tabs render the same `EventFeed` component, so search, filtering,
+  sorting, grouping and ad placement cannot drift apart between them. Listings
+  are split by `kind`, derived in `src/data/seed.ts`: if you have to book, pay
+  real money, or it is a track day or auction, it is an event. Everything else
+  is a meet.
+
+- Both feeds group by how soon something is, with full-text search across
+  titles, venues, towns, postcodes and organisers.
 - **Map** — all meets plotted across the UK, with a carousel that stays in sync
   with the selected pin. Native uses the platform map; web uses Leaflet with
   dark raster tiles. See [Maps on each platform](#maps-on-each-platform).
@@ -57,10 +67,11 @@ Other scripts:
 
 ```
 app/                    Screens — file paths are the routes (expo-router)
-  (tabs)/               Discover, Map, Saved, More
+  (tabs)/               Meets, Events, Map, Saved, More
   event/[id].tsx        Event detail
   filters.tsx           Filter sheet
 src/
+  screens/EventFeed.tsx The feed shared by the Meets and Events tabs
   data/seed.ts          The bundled UK meet catalogue
   data/repository.ts    The only thing the screens read data through
   state/                Saved list, filters, location, event loading

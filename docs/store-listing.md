@@ -32,8 +32,11 @@ Every car meet in Britain, in one place.
 
 PitLane finds what's on near you — from a Tuesday night car park meet to a full weekend of historic racing at Donington. Cars and coffee, show and shine, track days, JDM, Euro, American, classics and supercars, from Cornwall to the Highlands.
 
+MEETS AND EVENTS, KEPT SEPARATE
+Meets are the informal stuff you just turn up to — a car park on a Tuesday night, coffee on a Sunday morning. Events are the organised occasions with a ticket: track days, shows, auctions. Two tabs, so you're not wading through £200 track days when you fancy a free evening meet.
+
 WHAT'S ON, WHEN
-Meets are sorted by how soon they are, so you always see this week first. Search by town, postcode, venue or club.
+Everything is sorted by how soon it is, so you always see this week first. Search by town, postcode, venue or club.
 
 EVERY REGION
 London, the South East and South West, East of England, the Midlands, North West, North East, Yorkshire, Wales, Scotland and Northern Ireland.
@@ -137,11 +140,12 @@ iPad 13" only if you keep `supportsTablet` enabled in `app.json`.
 
 Suggested order, same on both platforms:
 
-1. Discover — the list, showing "This week"
-2. Map — pins across the UK with a card selected
-3. Event detail — Caffeine & Machine or Ace Cafe reads well
-4. Filters — chips selected
-5. Saved
+1. Meets — the list, showing "This week"
+2. Events — track days and shows
+3. Map — pins across the UK with a card selected
+4. Event detail — Caffeine & Machine or Ace Cafe reads well
+5. Filters — chips selected
+6. Saved
 
 ## Pre-submission checklist
 

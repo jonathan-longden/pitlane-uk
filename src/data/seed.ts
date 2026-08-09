@@ -73,7 +73,22 @@ function withTime(date: Date, time: string): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${time}`;
 }
 
-interface SeedRow extends Omit<CarEvent, 'startsAt' | 'endsAt'> {
+/**
+ * Splits the catalogue into meets and events.
+ *
+ * Derived rather than hand-tagged so the rule is visible and consistent: if you
+ * have to book, pay real money, or it is a track day or an auction, it is an
+ * organised event. Everything else is a meet you can simply turn up to. A real
+ * backend would carry `kind` explicitly and this would go away.
+ */
+function kindFor(row: Omit<CarEvent, 'startsAt' | 'endsAt' | 'kind'>): CarEvent['kind'] {
+  if (row.bookingRequired) return 'event';
+  if (row.pricePence >= 1000) return 'event';
+  if (row.categories.some((c) => c === 'Track Day' || c === 'Auction')) return 'event';
+  return 'meet';
+}
+
+interface SeedRow extends Omit<CarEvent, 'startsAt' | 'endsAt' | 'kind'> {
   inDays: number;
   from: string;
   to: string;
@@ -956,5 +971,10 @@ const rows: SeedRow[] = [
 
 export const seedEvents: CarEvent[] = rows.map(({ inDays, from, to, ...rest }) => {
   const date = resolveDate(inDays, WEEKDAY[rest.id]);
-  return { ...rest, startsAt: withTime(date, from), endsAt: withTime(date, to) };
+  return {
+    ...rest,
+    kind: kindFor(rest),
+    startsAt: withTime(date, from),
+    endsAt: withTime(date, to),
+  };
 });
