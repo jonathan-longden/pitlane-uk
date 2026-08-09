@@ -28,6 +28,11 @@ module.exports = ({ config }) => {
     );
   }
 
+  // GitHub Pages serves project sites from a subpath (/pitlane-uk), so the
+  // web export needs to know its base or every asset URL 404s. Set only when
+  // building for Pages — leaving it unset keeps the dev server at the root.
+  const baseUrl = process.env.PAGES_BASE_URL;
+
   return {
     ...config,
     android: {
@@ -35,6 +40,10 @@ module.exports = ({ config }) => {
       ...(apiKey
         ? { config: { ...config.android?.config, googleMaps: { apiKey } } }
         : {}),
+    },
+    experiments: {
+      ...config.experiments,
+      ...(baseUrl ? { baseUrl } : {}),
     },
   };
 };

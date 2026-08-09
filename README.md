@@ -217,8 +217,28 @@ eas submit --platform android --profile production
 
 ### Web
 
-`npm run build:web` produces a static site in `dist/` that can be dropped on any
-static host.
+The web build is live at **https://jonathan-longden.github.io/pitlane-uk/**.
+
+To redeploy after a change:
+
+```bash
+npm run deploy:web
+```
+
+That builds with the right base path, adds the two files GitHub Pages needs,
+and force-pushes to the `gh-pages` branch. Pages serves the new build within
+about a minute. See [`scripts/deploy-web.mjs`](scripts/deploy-web.mjs) for what
+each step is for.
+
+`npm run build:web` alone just produces a static site in `dist/` for any other
+host.
+
+**Known limitation of GitHub Pages:** it has no rewrite rules, so a deep link
+like `/event/goodwood-breakfast-club` is served via `404.html` and returns an
+HTTP **404 status** even though the page renders correctly. Harmless for
+testing and sharing, but search engines will treat those routes as missing. A
+host with real SPA rewrites — EAS Hosting, Netlify, Cloudflare Pages — returns
+200 and fixes it. Worth moving before you care about SEO.
 
 ## Before you can actually submit
 
