@@ -52,6 +52,11 @@ console.log('\n> Adding GitHub Pages support files\n');
 copyFileSync(join(dist, 'index.html'), join(dist, '404.html'));
 writeFileSync(join(dist, '.nojekyll'), '');
 
+console.log('\n> Rendering privacy and support pages\n');
+run(process.execPath, [join(root, 'scripts', 'build-legal-pages.mjs')], {
+  env: { PAGES_BASE_URL: BASE_URL },
+});
+
 console.log(`\n> Publishing to ${BRANCH}\n`);
 rmSync(join(dist, '.git'), { recursive: true, force: true });
 run('git', ['init', '-q', '-b', BRANCH], { cwd: dist });

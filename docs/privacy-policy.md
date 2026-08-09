@@ -11,25 +11,44 @@ policy must be updated before the change ships.
 > publishing. Both Apple and Google require this policy to be reachable at a
 > public URL, and that URL must be entered in your store listings.
 
-> **This policy describes the app WITHOUT accounts connected, which is how it
-> currently ships.** The sign-in screens exist but no Supabase project is
-> attached, so no account data is collected. **Before releasing a build with
-> accounts enabled, the sections below must be rewritten** — see
-> `docs/auth-setup.md` section 8. Shipping accounts under a policy that says
-> "no data collected" is the mismatch that gets apps removed rather than
-> rejected.
-
 ## The short version
 
-PitLane UK does not have user accounts, does not collect personal information,
-and does not send your data anywhere. Everything the app stores stays on your
-device.
+You can use PitLane UK entirely without an account, and if you do, nothing
+leaves your device. If you choose to create an account, we store your email
+address and name so we can sign you in — nothing else, and never for
+advertising.
 
 ## What we collect
 
-**Nothing is sent to us.** The app has no server of its own and no analytics
-SDK. We do not collect your name, email address, phone number, contacts, photos,
-advertising identifier, or any other identifier.
+### If you do not sign in
+
+**Nothing.** There is no analytics SDK, no advertising network and no tracking.
+We do not know you are using the app.
+
+### If you create an account
+
+Accounts are handled by [Supabase](https://supabase.com), which stores the data
+on our behalf inside the UK/EU region.
+
+| What | Why |
+| --- | --- |
+| Email address | To identify your account and let you sign in |
+| Name you provide | To show who you are in the app |
+| Password | Stored only as a secure hash. We never see it. |
+| Account identifier | A random ID used to link your account to your data |
+
+If you sign in with **Google**, we receive your email address, name and profile
+picture from Google. We do not receive your Google password and cannot act on
+your Google account.
+
+We do not sell your data, share it with advertisers, or use it to build a
+profile of you.
+
+## Deleting your account
+
+You can delete your account from **More → Delete my account** inside the app.
+This permanently removes your account and everything attached to it, and cannot
+be undone. You do not have to contact us or explain why.
 
 ## Information stored on your device
 
@@ -100,10 +119,24 @@ Questions about this policy or about a listing:
 
 For convenience, the answers matching this policy:
 
-**Apple App Store — App Privacy:** Select **"Data Not Collected"**. Location is
-used only on-device and is not collected or transmitted, so it is not declared
-as collected data.
+These reflect the app **with accounts enabled**, which is its current state.
 
-**Google Play — Data safety:** Declare **no data collected** and **no data
-shared**. Note that the app uses location on-device for a user-initiated
-feature, and that data is not sent off the device.
+**Apple App Store — App Privacy:**
+
+| Data type | Collected | Linked to user | Used for tracking | Purpose |
+| --- | --- | --- | --- | --- |
+| Email address | Yes | Yes | No | App Functionality |
+| Name | Yes | Yes | No | App Functionality |
+| User ID | Yes | Yes | No | App Functionality |
+| Coarse/Precise Location | **No** | — | — | Used on-device only, never transmitted |
+| Photos | **No** | — | — | Stored on-device only, never uploaded |
+
+**Google Play — Data safety:** declare Personal info → Name and Email address,
+collected but **not** shared, required for account creation, encrypted in
+transit, and **deletable in-app** (point the deletion URL at the in-app route
+described above).
+
+**Location and photos are genuinely not collected.** Location is read on the
+device to calculate distance and is never sent anywhere; photos attached to
+listings stay on the device. Declaring them as collected would be inaccurate in
+the other direction, which is also worth avoiding.
