@@ -152,7 +152,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async (provider: OAuthProviderId): Promise<AuthResult> => {
       if (!supabase) return NOT_CONFIGURED;
 
-      const redirectTo = Linking.createURL('/auth/callback');
+      /**
+       * On web, deliberately send no redirect and let Supabase use the Site URL
+       * configured on the project.
+       *
+       * `Linking.createURL` ignores the web build's baseUrl, so on GitHub Pages
+       * it produces `https://<host>/auth/callback` with the `/pitlane-uk`
+       * segment missing — a URL that is not this site and is not on the
+       * allow-list. Supabase does not reject unlisted redirects, it silently
+       * falls back to the Site URL, so the failure is invisible: the user
+       * completes Google sign-in and lands back on the app looking signed out.
+       *
+       * The Site URL is already the right destination, and the client picks the
+       * session up from the URL there via detectSessionInUrl.
+       */
+      const redirectTo =
+        Platform.OS === 'web' ? undefined : Linking.createURL('/auth/callback');
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
