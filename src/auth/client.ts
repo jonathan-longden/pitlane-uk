@@ -20,6 +20,33 @@ const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
 export const isAuthConfigured = Boolean(url && anonKey);
 
+/**
+ * Asks the project which third-party providers are actually switched on.
+ *
+ * Each provider needs an OAuth app registered with Google/Microsoft/Apple as
+ * well as being enabled in Supabase, so it is entirely normal for some to be
+ * off. Offering a button that cannot work is worse than not offering it, so
+ * the sign-in screen only shows providers this returns.
+ *
+ * Returns null if the check itself fails, which the caller treats as "show
+ * everything" rather than hiding all sign-in options behind a network blip.
+ */
+export async function fetchEnabledProviders(): Promise<string[] | null> {
+  if (!url || !anonKey) return [];
+  try {
+    const res = await fetch(`${url}/auth/v1/settings`, {
+      headers: { apikey: anonKey },
+    });
+    if (!res.ok) return null;
+    const body = (await res.json()) as { external?: Record<string, boolean> };
+    return Object.entries(body.external ?? {})
+      .filter(([, enabled]) => enabled)
+      .map(([name]) => name);
+  } catch {
+    return null;
+  }
+}
+
 export const supabase: SupabaseClient | null = isAuthConfigured
   ? createClient(url!, anonKey!, {
       auth: {

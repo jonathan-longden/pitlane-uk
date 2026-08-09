@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react';
 import { Platform } from 'react-native';
-import { isAuthConfigured, supabase } from '../auth/client';
+import { fetchEnabledProviders, isAuthConfigured, supabase } from '../auth/client';
 import type { AuthResult, AuthUser, OAuthProviderId } from '../auth/types';
 
 interface AuthContextValue {
@@ -17,6 +17,8 @@ interface AuthContextValue {
   /** False until the stored session has been read back. */
   ready: boolean;
   configured: boolean;
+  /** Providers switched on in the project. null means the check failed. */
+  enabledProviders: string[] | null;
   signUpWithEmail: (email: string, password: string, name: string) => Promise<AuthResult>;
   signInWithEmail: (email: string, password: string) => Promise<AuthResult>;
   signInWithProvider: (provider: OAuthProviderId) => Promise<AuthResult>;
@@ -73,6 +75,17 @@ function friendly(message: string): string {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [ready, setReady] = useState(!isAuthConfigured);
+  const [enabledProviders, setEnabledProviders] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchEnabledProviders().then((list) => {
+      if (!cancelled) setEnabledProviders(list);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!supabase) return;
@@ -209,6 +222,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       ready,
       configured: isAuthConfigured,
+      enabledProviders,
       signUpWithEmail,
       signInWithEmail,
       signInWithProvider,
@@ -219,6 +233,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [
       user,
       ready,
+      enabledProviders,
       signUpWithEmail,
       signInWithEmail,
       signInWithProvider,

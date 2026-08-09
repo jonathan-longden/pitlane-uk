@@ -22,6 +22,7 @@ export default function SignInScreen() {
   const router = useRouter();
   const {
     configured,
+    enabledProviders,
     signInWithEmail,
     signUpWithEmail,
     signInWithProvider,
@@ -36,8 +37,14 @@ export default function SignInScreen() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
+  // Only offer providers that this platform supports AND that are actually
+  // switched on in the project. A button that cannot work is worse than no
+  // button. A null list means the check failed, so fall back to showing all.
   const providers = OAUTH_PROVIDERS.filter(
-    (p) => !p.platforms || p.platforms.includes(Platform.OS as 'ios' | 'android' | 'web'),
+    (p) =>
+      (!p.platforms ||
+        p.platforms.includes(Platform.OS as 'ios' | 'android' | 'web')) &&
+      (enabledProviders === null || enabledProviders.includes(p.id)),
   );
 
   async function submitEmail() {
@@ -119,6 +126,7 @@ export default function SignInScreen() {
           </View>
         )}
 
+        {providers.length > 0 && (
         <View style={styles.providers}>
           {providers.map((provider) => (
             <Pressable
@@ -143,12 +151,15 @@ export default function SignInScreen() {
             </Pressable>
           ))}
         </View>
+        )}
 
-        <View style={styles.dividerRow}>
-          <View style={styles.divider} />
-          <Text style={styles.dividerText}>or use your email</Text>
-          <View style={styles.divider} />
-        </View>
+        {providers.length > 0 && (
+          <View style={styles.dividerRow}>
+            <View style={styles.divider} />
+            <Text style={styles.dividerText}>or use your email</Text>
+            <View style={styles.divider} />
+          </View>
+        )}
 
         {mode === 'signUp' && (
           <TextInput
